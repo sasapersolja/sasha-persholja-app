@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#050505" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Sasha Persholja" />
+  <title>Sasha Persholja App</title>
+  <meta name="description" content="Official Sasha Persholja mobile music app." />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="../assets/icons/app-icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Sasha Persholja app home">SASHA PERSHOLJA</a>
+    <nav aria-label="App navigation">
+      <a href="#listen">Listen</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="trackTitle">
+      <video id="heroVideo" class="hero-video" muted loop playsinline preload="metadata" hidden></video>
+      <div class="hero-overlay"></div>
+
+      <div class="audio-controls" aria-label="Song controls">
+        <button id="soundToggle" type="button" aria-pressed="false">🔇 Song Off</button>
+        <button id="volumeDown" type="button" aria-label="Decrease volume">−</button>
+        <span id="volumeValue" aria-live="polite">60%</span>
+        <button id="volumeUp" type="button" aria-label="Increase volume">+</button>
+        <button id="warmToggle" type="button" aria-pressed="false">Warm Off</button>
+      </div>
+
+      <div class="hero-copy">
+        <p id="featuredLabel" class="eyebrow">FEATURED RELEASE</p>
+        <h1 id="trackTitle">Sasha Persholja</h1>
+        <p id="trackSubtitle" class="subtitle"></p>
+        <a id="primaryAction" class="primary-action" href="#listen">Choose Your Platform</a>
+      </div>
+    </section>
+
+    <section id="listen" class="section">
+      <div class="section-heading"><span></span><h2 id="listenTitle">Listen</h2><span></span></div>
+      <div id="platformGrid" class="platform-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <div>
+        <p class="eyebrow">OFFICIAL ARTIST APP</p>
+        <h2 id="statement">Official music by Sasha Persholja.</h2>
+        <p class="signature">Sasha Persholja</p>
+      </div>
+      <div class="contact-card">
+        <a id="emailLink" href="#">Email</a>
+        <a id="websiteLink" href="#" target="_blank" rel="noopener noreferrer">Official Website</a>
+        <div class="socials">
+          <a id="instagramLink" href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a id="youtubeLink" href="#" target="_blank" rel="noopener noreferrer">YouTube</a>
+          <a id="facebookLink" href="#" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© SASHA PERSHOLJA. ALL RIGHTS RESERVED — FEJKAVANGARD MUSIC</footer>
+
+  <script src="./track-data.js"></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>
