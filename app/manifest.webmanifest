@@ -12,5 +12,13 @@
   "lang": "en",
   "dir": "ltr",
   "categories": ["music", "entertainment"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
   "prefer_related_applications": false
 }
