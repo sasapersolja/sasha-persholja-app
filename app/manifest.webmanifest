@@ -3,7 +3,7 @@
   "name": "Sasha Persholja Official App",
   "short_name": "Sasha Persholja",
   "description": "Official Sasha Persholja mobile music app featuring Big Black Puppet.",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
