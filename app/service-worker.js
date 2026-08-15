@@ -1,7 +1,6 @@
-const CACHE_NAME = 'sasha-persholja-app-v2';
+const CACHE_NAME = 'sasha-persholja-app-v3';
 const APP_SHELL = [
   './',
-  './index.html',
   './styles.css',
   './app.js',
   './manifest.webmanifest'
@@ -28,6 +27,6 @@ self.addEventListener('fetch', (event) => {
       const copy = response.clone();
       caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
       return response;
-    }).catch(() => event.request.mode === 'navigate' ? caches.match('./index.html') : undefined))
+    }).catch(() => event.request.mode === 'navigate' ? caches.match('./') : undefined))
   );
 });
