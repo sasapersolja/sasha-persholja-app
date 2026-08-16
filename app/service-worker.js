@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sasha-persholja-app-v5';
+const CACHE_NAME = 'sasha-persholja-app-v6';
 const APP_SHELL = [
   './',
   './styles.css',
