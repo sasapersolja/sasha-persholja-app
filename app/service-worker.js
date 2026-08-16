@@ -1,8 +1,9 @@
-const CACHE_NAME = 'sasha-persholja-app-v9';
+const CACHE_NAME = 'sasha-persholja-app-v10';
 const APP_SHELL = [
   './',
   './styles.css',
   './app.js',
+  './update-notification.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
@@ -11,7 +12,10 @@ const APP_SHELL = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
-  self.skipWaiting();
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
