@@ -1,9 +1,12 @@
-const CACHE_NAME = 'sasha-persholja-app-v4';
+const CACHE_NAME = 'sasha-persholja-app-v5';
 const APP_SHELL = [
   './',
   './styles.css',
   './app.js',
-  './manifest.webmanifest'
+  './manifest.webmanifest',
+  './icon-192.png',
+  './icon-512.png',
+  './icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
