@@ -32,5 +32,19 @@
       "purpose": "any maskable"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Listen to Big Black Puppet",
+      "short_name": "Listen",
+      "description": "Open the featured release and streaming options.",
+      "url": "./#listen"
+    },
+    {
+      "name": "Artist Contact",
+      "short_name": "Contact",
+      "description": "Open Sasha Persholja artist contact information.",
+      "url": "./#contact"
+    }
+  ],
   "prefer_related_applications": false
 }
