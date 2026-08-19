@@ -1,0 +1,48 @@
+# Netlify routing for the current repository layout.
+# Keep the app files in /app and shared media in /assets,
+# while serving the public PWA from the clean site root URL.
+
+[[redirects]]
+  from = "/"
+  to = "/app/"
+  status = 200
+
+[[redirects]]
+  from = "/styles.css"
+  to = "/app/styles.css"
+  status = 200
+
+[[redirects]]
+  from = "/app.js"
+  to = "/app/app.js"
+  status = 200
+
+[[redirects]]
+  from = "/update-notification.js"
+  to = "/app/update-notification.js"
+  status = 200
+
+[[redirects]]
+  from = "/manifest.webmanifest"
+  to = "/app/manifest.webmanifest"
+  status = 200
+
+[[redirects]]
+  from = "/service-worker.js"
+  to = "/app/service-worker.js"
+  status = 200
+
+[[redirects]]
+  from = "/icon.svg"
+  to = "/app/icon.svg"
+  status = 200
+
+[[redirects]]
+  from = "/icon-192.png"
+  to = "/app/icon-192.png"
+  status = 200
+
+[[redirects]]
+  from = "/icon-512.png"
+  to = "/app/icon-512.png"
+  status = 200
