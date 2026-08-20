@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sasha-persholja-app-v16';
+const CACHE_NAME = 'sasha-persholja-app-v17';
 const APP_SHELL = [
   './',
   './styles.css',
@@ -25,7 +25,7 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))))
+    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => cache.delete(key))))
   );
   self.clients.claim();
 });
