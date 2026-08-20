@@ -1,37 +1,28 @@
 {
-  "id": "./",
+  "id": "/",
   "name": "Sasha Persholja Official App",
   "short_name": "Sasha Persholja",
   "description": "Official Sasha Persholja mobile music app featuring Big Black Puppet.",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#050505",
   "theme_color": "#050505",
   "lang": "en",
   "dir": "ltr",
-  "categories": [
-    "music",
-    "entertainment"
-  ],
+  "categories": ["music", "entertainment"],
   "icons": [
     {
-      "src": "./Novi Logo - App Install 192x192.png",
+      "src": "/app/Novi Logo - App Install 192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./Novi Logo - App Install 512x512.png",
+      "src": "/app/Novi Logo - App Install 512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
@@ -40,13 +31,13 @@
       "name": "Listen to Big Black Puppet",
       "short_name": "Listen",
       "description": "Open the featured release and streaming options.",
-      "url": "./#listen"
+      "url": "/#listen"
     },
     {
       "name": "Artist Contact",
       "short_name": "Contact",
       "description": "Open Sasha Persholja artist contact information.",
-      "url": "./#contact"
+      "url": "/#contact"
     }
   ],
   "prefer_related_applications": false
