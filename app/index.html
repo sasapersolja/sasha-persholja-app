@@ -18,39 +18,92 @@
   <link rel="stylesheet" href="/styles.css" />
   <script>
     let fejkavangardInstallPrompt = null;
+
+    function fejkavangardStandalone() {
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function fejkavangardIOS() {
+      return /iphone|ipad|ipod/i.test(navigator.userAgent);
+    }
+
+    function renderFejkavangardInstall() {
+      const button = document.getElementById('installAppButton');
+      const note = document.getElementById('installAppNote');
+      if (!button) return;
+
+      if (fejkavangardStandalone()) {
+        button.hidden = true;
+        if (note) note.textContent = '';
+        return;
+      }
+
+      if (fejkavangardInstallPrompt) {
+        button.hidden = false;
+        button.disabled = false;
+        button.classList.add('install-ready');
+        if (note) note.textContent = '';
+        return;
+      }
+
+      if (fejkavangardIOS()) {
+        button.hidden = false;
+        button.disabled = false;
+        button.classList.remove('install-ready');
+        if (note) note.textContent = '';
+        return;
+      }
+
+      button.hidden = true;
+      if (note) note.textContent = '';
+    }
+
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
       fejkavangardInstallPrompt = event;
+      renderFejkavangardInstall();
     });
+
+    window.addEventListener('appinstalled', () => {
+      fejkavangardInstallPrompt = null;
+      renderFejkavangardInstall();
+    });
+
     window.addEventListener('DOMContentLoaded', () => {
       const button = document.getElementById('installAppButton');
       const note = document.getElementById('installAppNote');
       if (!button) return;
+
       button.addEventListener('click', async (event) => {
         event.preventDefault();
         event.stopImmediatePropagation();
-        const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        if (standalone) {
-          if (note) note.textContent = 'Fejkavangard App is already installed.';
+
+        if (fejkavangardStandalone()) {
+          renderFejkavangardInstall();
           return;
         }
+
         if (fejkavangardInstallPrompt) {
-          fejkavangardInstallPrompt.prompt();
-          try {
-            const choice = await fejkavangardInstallPrompt.userChoice;
-            if (note) note.textContent = choice && choice.outcome === 'accepted' ? 'Installing Fejkavangard App…' : '';
-          } catch (error) {
-            if (note) note.textContent = '';
-          }
+          const promptEvent = fejkavangardInstallPrompt;
           fejkavangardInstallPrompt = null;
+          promptEvent.prompt();
+          try {
+            const choice = await promptEvent.userChoice;
+            if (choice && choice.outcome === 'accepted') {
+              const label = button.querySelector('span');
+              if (label) label.textContent = 'INSTALLING FEJKAVANGARD APP';
+            }
+          } catch (error) {}
+          renderFejkavangardInstall();
           return;
         }
-        if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-          if (note) note.textContent = 'Tap Share → Add to Home Screen.';
-        } else {
-          if (note) note.textContent = 'Use the browser menu → Install app.';
+
+        if (fejkavangardIOS() && note) {
+          note.textContent = 'Tap Share → Add to Home Screen.';
         }
       }, true);
+
+      renderFejkavangardInstall();
     });
   </script>
   <style>
@@ -113,7 +166,7 @@
           <a class="social-icon youtube-social" href="https://www.youtube.com/@mkudmkud" target="_blank" rel="noopener noreferrer external" aria-label="Open YouTube in a new tab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.4 7.2a2.8 2.8 0 0 0-2-2C17.6 4.7 12 4.7 12 4.7s-5.6 0-7.4.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.1 12a29 29 0 0 0 .5 4.8 2.8 2.8 0 0 0 2 2c1.8.5 7.4.5 7.4.5s5.6 0 7.4-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8 29 29 0 0 0-.5-4.8Z"/><path class="social-play" d="m10 15.4 5.2-3.4L10 8.6Z"/></svg></a>
           <a class="social-icon facebook-social" href="https://www.facebook.com/SashaPersholja/" target="_blank" rel="noopener noreferrer external" aria-label="Open Facebook in a new tab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.8 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.6 1.7-1.6H17V3.8c-.7-.1-1.5-.2-2.2-.2-2.3 0-3.9 1.4-3.9 4V10H8.3v3h2.6v8h2.9Z"/></svg></a>
         </div>
-        <button class="install-app-button" id="installAppButton" type="button" aria-label="Install Fejkavangard App">
+        <button class="install-app-button" id="installAppButton" type="button" aria-label="Install Fejkavangard App" hidden>
           <img src="/app/Novi Logo - App Install 192x192.png" alt="" width="64" height="64" />
           <span>INSTALL FEJKAVANGARD APP</span>
         </button>
