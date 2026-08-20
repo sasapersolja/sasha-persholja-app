@@ -9,13 +9,50 @@
   <meta name="apple-mobile-web-app-title" content="Sasha Persholja" />
   <title>Sasha Persholja | Official App</title>
   <meta name="description" content="Official Sasha Persholja mobile music app featuring Big Black Puppet." />
-  <link rel="icon" href="./Novi Logo - Favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" sizes="16x16" href="./Novi Logo - Favicon 16x16.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="./Novi Logo - Favicon 32x32.png" />
-  <link rel="icon" type="image/png" sizes="48x48" href="./Novi Logo - Favicon 48x48.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./Novi Logo - Apple Touch Icon 180x180.png" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="/app/Novi Logo - Favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/app/Novi Logo - Favicon 16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/app/Novi Logo - Favicon 32x32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/app/Novi Logo - Favicon 48x48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/app/Novi Logo - Apple Touch Icon 180x180.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script>
+    let fejkavangardInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      fejkavangardInstallPrompt = event;
+    });
+    window.addEventListener('DOMContentLoaded', () => {
+      const button = document.getElementById('installAppButton');
+      const note = document.getElementById('installAppNote');
+      if (!button) return;
+      button.addEventListener('click', async (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        if (standalone) {
+          if (note) note.textContent = 'Fejkavangard App is already installed.';
+          return;
+        }
+        if (fejkavangardInstallPrompt) {
+          fejkavangardInstallPrompt.prompt();
+          try {
+            const choice = await fejkavangardInstallPrompt.userChoice;
+            if (note) note.textContent = choice && choice.outcome === 'accepted' ? 'Installing Fejkavangard App…' : '';
+          } catch (error) {
+            if (note) note.textContent = '';
+          }
+          fejkavangardInstallPrompt = null;
+          return;
+        }
+        if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+          if (note) note.textContent = 'Tap Share → Add to Home Screen.';
+        } else {
+          if (note) note.textContent = 'Use the browser menu → Install app.';
+        }
+      }, true);
+    });
+  </script>
   <style>
     @media (max-width:980px){
       .poster-hero{padding-bottom:132px}
@@ -77,7 +114,7 @@
           <a class="social-icon facebook-social" href="https://www.facebook.com/SashaPersholja/" target="_blank" rel="noopener noreferrer external" aria-label="Open Facebook in a new tab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.8 21v-8h2.8l.4-3h-3.2V8.1c0-.9.3-1.6 1.7-1.6H17V3.8c-.7-.1-1.5-.2-2.2-.2-2.3 0-3.9 1.4-3.9 4V10H8.3v3h2.6v8h2.9Z"/></svg></a>
         </div>
         <button class="install-app-button" id="installAppButton" type="button" aria-label="Install Fejkavangard App">
-          <img src="./Novi Logo - App Install 192x192.png" alt="" width="64" height="64" />
+          <img src="/app/Novi Logo - App Install 192x192.png" alt="" width="64" height="64" />
           <span>INSTALL FEJKAVANGARD APP</span>
         </button>
         <p class="install-app-note" id="installAppNote" aria-live="polite"></p>
@@ -85,6 +122,6 @@
     </section>
   </main>
   <footer><p>© SASHA PERSHOLJA. ALL RIGHTS RESERVED — FEJKAVANGARD MUSIC</p></footer>
-  <script src="./app.js" defer></script><script src="./update-notification.js" defer></script>
+  <script src="/app.js" defer></script><script src="/update-notification.js" defer></script>
 </body>
 </html>
