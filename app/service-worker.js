@@ -1,12 +1,17 @@
-const CACHE_NAME = 'sasha-persholja-app-v15';
+const CACHE_NAME = 'sasha-persholja-app-v16';
 const APP_SHELL = [
   './',
   './styles.css',
   './app.js',
   './update-notification.js',
   './manifest.webmanifest',
-  './icon-192.png',
-  './icon-512.png',
+  './Novi Logo - App Install 192x192.png',
+  './Novi Logo - App Install 512x512.png',
+  './Novi Logo - Apple Touch Icon 180x180.png',
+  './Novi Logo - Favicon 16x16.png',
+  './Novi Logo - Favicon 32x32.png',
+  './Novi Logo - Favicon 48x48.png',
+  './Novi Logo - Favicon.ico',
   './icon.svg'
 ];
 
