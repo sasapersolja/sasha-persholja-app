@@ -1,18 +1,17 @@
-const CACHE_NAME = 'sasha-persholja-app-v17';
+const CACHE_NAME = 'sasha-persholja-app-v18';
 const APP_SHELL = [
-  './',
-  './styles.css',
-  './app.js',
-  './update-notification.js',
-  './manifest.webmanifest',
-  './Novi Logo - App Install 192x192.png',
-  './Novi Logo - App Install 512x512.png',
-  './Novi Logo - Apple Touch Icon 180x180.png',
-  './Novi Logo - Favicon 16x16.png',
-  './Novi Logo - Favicon 32x32.png',
-  './Novi Logo - Favicon 48x48.png',
-  './Novi Logo - Favicon.ico',
-  './icon.svg'
+  '/',
+  '/styles.css',
+  '/app.js',
+  '/update-notification.js',
+  '/manifest.webmanifest',
+  '/app/Novi Logo - App Install 192x192.png',
+  '/app/Novi Logo - App Install 512x512.png',
+  '/app/Novi Logo - Apple Touch Icon 180x180.png',
+  '/app/Novi Logo - Favicon 16x16.png',
+  '/app/Novi Logo - Favicon 32x32.png',
+  '/app/Novi Logo - Favicon 48x48.png',
+  '/app/Novi Logo - Favicon.ico'
 ];
 
 self.addEventListener('install', (event) => {
@@ -33,10 +32,8 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   if (event.request.headers.has('range')) return;
-
   const requestUrl = new URL(event.request.url);
   if (requestUrl.origin !== self.location.origin) return;
-
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
       if (response && response.status === 200 && response.type === 'basic') {
@@ -45,7 +42,7 @@ self.addEventListener('fetch', (event) => {
       }
       return response;
     }).catch((error) => {
-      if (event.request.mode === 'navigate') return caches.match('./');
+      if (event.request.mode === 'navigate') return caches.match('/');
       throw error;
     }))
   );
