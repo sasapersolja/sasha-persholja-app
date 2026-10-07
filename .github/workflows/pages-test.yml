@@ -1,0 +1,89 @@
+name: Deploy GitHub Pages test
+
+on:
+  push:
+    branches: [github-pages-test]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-test
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout test branch
+        uses: actions/checkout@v4
+
+      - name: Build isolated Pages artifact
+        run: |
+          mkdir -p dist
+          cp -R app/. dist/
+          mkdir -p dist/assets
+          cp -R assets/. dist/assets/
+          python3 - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              'dist/index.html': [
+                  ('href="/app/', 'href="./'),
+                  ('src="/app/', 'src="./'),
+                  ('href="/manifest.webmanifest"', 'href="./manifest.webmanifest"'),
+                  ('href="/styles.css"', 'href="./styles.css"'),
+                  ('src="/app.js"', 'src="./app.js"'),
+                  ('src="/update-notification.js"', 'src="./update-notification.js"'),
+                  ('poster="../assets/', 'poster="./assets/'),
+              ],
+              'dist/manifest.webmanifest': [
+                  ('"id": "/"', '"id": "./"'),
+                  ('"start_url": "/"', '"start_url": "./"'),
+                  ('"scope": "/"', '"scope": "./"'),
+                  ('"src": "/app/', '"src": "./'),
+                  ('"url": "/#listen"', '"url": "./#listen"'),
+                  ('"url": "/#contact"', '"url": "./#contact"'),
+              ],
+              'dist/service-worker.js': [
+                  ("  '/',", "  './',"),
+                  ("  '/styles.css',", "  './styles.css',"),
+                  ("  '/app.js',", "  './app.js',"),
+                  ("  '/update-notification.js',", "  './update-notification.js',"),
+                  ("  '/manifest.webmanifest',", "  './manifest.webmanifest',"),
+                  ("  '/app/", "  './"),
+                  ("caches.match('/')", "caches.match('./')"),
+              ],
+              'dist/update-notification.js': [
+                  ("register('/service-worker.js',{scope:'/'})", "register('./service-worker.js',{scope:'./'})"),
+              ],
+              'dist/app.js': [
+                  ("new URL('../assets/images/", "new URL('./assets/images/"),
+              ],
+          }
+
+          for filename, pairs in replacements.items():
+              path = Path(filename)
+              text = path.read_text()
+              for old, new in pairs:
+                  text = text.replace(old, new)
+              path.write_text(text)
+          PY
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
