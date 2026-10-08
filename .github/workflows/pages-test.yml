@@ -32,6 +32,7 @@ jobs:
           cp -R assets/. dist/assets/
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           replacements = {
               'dist/index.html': [
@@ -42,6 +43,9 @@ jobs:
                   ('src="/app.js"', 'src="./app.js"'),
                   ('src="/update-notification.js"', 'src="./update-notification.js"'),
                   ('poster="../assets/', 'poster="./assets/'),
+                  ('        <button class="warm-toggle" id="warmToggle" type="button" aria-pressed="false">Warm Off</button>\n', ''),
+                  ('grid-template-columns:minmax(92px,1.5fr) 48px 52px 48px minmax(82px,1.2fr)', 'grid-template-columns:minmax(92px,1.5fr) 48px 52px 48px'),
+                  ('grid-template-columns:minmax(78px,1.4fr) 44px 48px 44px minmax(74px,1.2fr)', 'grid-template-columns:minmax(78px,1.4fr) 44px 48px 44px'),
               ],
               'dist/manifest.webmanifest': [
                   ('"id": "/"', '"id": "./"'),
@@ -65,6 +69,10 @@ jobs:
               ],
               'dist/app.js': [
                   ("new URL('../assets/images/", "new URL('./assets/images/"),
+                  ("const warmToggle=document.getElementById('warmToggle');", ''),
+                  ("let warmEnabled=false;let audioContext=null;let mediaSource=null;let lowShelf=null;let highShelf=null;", ''),
+                  ('resumeWarmAudioContext();', ''),
+                  ("if(warmToggle){updateWarmUI();warmToggle.addEventListener('click',()=>setWarmEffect(!warmEnabled))}", ''),
               ],
           }
 
@@ -73,7 +81,19 @@ jobs:
               text = path.read_text()
               for old, new in pairs:
                   text = text.replace(old, new)
+              if filename == 'dist/app.js':
+                  text, count = re.subn(r"function initializeWarmAudio\(\).*?(?=function changeVolume)", "", text, count=1)
+                  if count != 1:
+                      raise RuntimeError('Warm audio function block was not found exactly once')
               path.write_text(text)
+
+          # Fail the build rather than deploy a partial Warm removal.
+          index = Path('dist/index.html').read_text()
+          app_js = Path('dist/app.js').read_text()
+          forbidden = ('warmToggle', 'Warm Off', 'Warm On', 'initializeWarmAudio', 'resumeWarmAudioContext', 'setWarmEffect', 'createMediaElementSource')
+          leftovers = [token for token in forbidden if token in index or token in app_js]
+          if leftovers:
+              raise RuntimeError(f'Warm removal incomplete: {leftovers}')
           PY
 
       - name: Configure Pages
