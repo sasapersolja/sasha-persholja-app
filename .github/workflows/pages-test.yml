@@ -30,6 +30,8 @@ jobs:
           cp -R app/. dist/
           mkdir -p dist/assets
           cp -R assets/. dist/assets/
+          cp sitemap.xml dist/sitemap.xml
+          cp robots.txt dist/robots.txt
           python3 - <<'PY'
           from pathlib import Path
           import re
